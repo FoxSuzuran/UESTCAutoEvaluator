@@ -33,63 +33,70 @@ function AutoEvaluate(){
     }
 }
 
-// 绘制窗口
-if (1) {
-    // 主题
-    var style_btn = 'float:right;background:rgba(228,228,228,0.4); cursor:pointer; margin:0px 1px 0px 0px; padding:0px 3px;color:black; border:2px ridge black;border:2px groove black;';
-    var style_win_top = 'z-index:998; padding:6px 10px 8px 15px;background-color:lightGrey;position:fixed;left:5px;top:5px;border:1px solid grey; ';
-    var style_win_buttom = 'z-index:998; padding:6px 10px 8px 15px;background-color:lightGrey;position:fixed;right:5px;bottom:5px;border:1px solid grey;  ';
-    // 开始绘制
-    var newDiv = document.createElement("div");
-    newDiv.id = "controlWindow";
-    newDiv.align = "left";
-    document.body.appendChild(newDiv);
-    GM_addStyle("#controlWindow{" + style_win_top + " }");
-    var table = document.createElement("table");
-    newDiv.appendChild(table);
-    var th = document.createElement("th");
-    th.id = "headTd";
-    var thDiv = document.createElement("span");
-    thDiv.id = "thDiv";
-    thDiv.innerHTML = "UESTC Evaluator";
-    GM_addStyle("#thDiv{color:red;font-size: 10pt;}");
-    th.appendChild(thDiv);
-    table.appendChild(th);
-    var tr = document.createElement("tr");
-    table.appendChild(tr);
-    var tr2= document.createElement("tr");
-    table.appendChild(tr2);
-    var td = document.createElement("td");
-    td.id = "footTd";
-    var td2 = document.createElement("td");
-    td2.id = "footTd2";
-    tr.appendChild(td);
-    tr2.appendChild(td2);
-    var close = document.createElement("span");
-    close.id = "close";
-    close.innerHTML = "关闭弹窗";
-    close.addEventListener("click", function () {document.body.removeChild(document.getElementById("controlWindow"));}, false);
-    td.appendChild(close);
-    GM_addStyle("#close{" + style_btn + "}");
-    var score = document.createElement("span");
-    score.id = "score";
-    score.innerHTML = "开始评教";
-    score.addEventListener("click", AutoEvaluate);
-    td.appendChild(score);
-    GM_addStyle("#score{" + style_btn + "}");
-    var star = document.createElement("span");
-    star.id = "star";
-    star.innerHTML = "联系作者";
-    star.addEventListener("click", function () {window.open("https://github.com/FoxSuzuran", "_blank");});
-    td2.appendChild(star);
-    GM_addStyle("#star{" + style_btn + "}");
-    var open = document.createElement("span");
-    open.id = "open";
-    open.innerHTML = "项目地址";
-    open.addEventListener("click", function () {window.open("https://github.com/FoxSuzuran/UESTCAutoEvaluator", "_blank");});
-    td2.appendChild(open);
-    GM_addStyle("#open{" + style_btn + "}");
+setInterval(WindowDraw,"500");
+
+function WindowDraw(){
+    nowurl = location.pathname;
+    // 绘制窗口
+    if (nowurl.includes("evaluate")) {
+        // 主题
+        var style_btn = 'float:right;background:rgba(228,228,228,0.4); cursor:pointer; margin:0px 1px 0px 0px; padding:0px 3px;color:black; border:2px ridge black;border:2px groove black;';
+        var style_win_top = 'z-index:998; padding:6px 10px 8px 15px;background-color:lightGrey;position:fixed;left:5px;top:5px;border:1px solid grey; ';
+        var style_win_buttom = 'z-index:998; padding:6px 10px 8px 15px;background-color:lightGrey;position:fixed;right:5px;bottom:5px;border:1px solid grey;  ';
+        // 开始绘制
+        var newDiv = document.createElement("div");
+        newDiv.id = "controlWindow";
+        newDiv.align = "left";
+        document.body.appendChild(newDiv);
+        GM_addStyle("#controlWindow{" + style_win_top + " }");
+        var table = document.createElement("table");
+        newDiv.appendChild(table);
+        var th = document.createElement("th");
+        th.id = "headTd";
+        var thDiv = document.createElement("span");
+        thDiv.id = "thDiv";
+        thDiv.innerHTML = "UESTC Evaluator";
+        GM_addStyle("#thDiv{color:red;font-size: 10pt;}");
+        th.appendChild(thDiv);
+        table.appendChild(th);
+        var tr = document.createElement("tr");
+        table.appendChild(tr);
+        var tr2= document.createElement("tr");
+        table.appendChild(tr2);
+        var td = document.createElement("td");
+        td.id = "footTd";
+        var td2 = document.createElement("td");
+        td2.id = "footTd2";
+        tr.appendChild(td);
+        tr2.appendChild(td2);
+        var close = document.createElement("span");
+        close.id = "close";
+        close.innerHTML = "关闭弹窗";
+        close.addEventListener("click", function () {document.body.removeChild(document.getElementById("controlWindow"));}, false);
+        td.appendChild(close);
+        GM_addStyle("#close{" + style_btn + "}");
+        var score = document.createElement("span");
+        score.id = "score";
+        score.innerHTML = "开始评教";
+        score.addEventListener("click", AutoEvaluate);
+        td.appendChild(score);
+        GM_addStyle("#score{" + style_btn + "}");
+        var star = document.createElement("span");
+        star.id = "star";
+        star.innerHTML = "联系作者";
+        star.addEventListener("click", function () {window.open("https://github.com/FoxSuzuran", "_blank");});
+        td2.appendChild(star);
+        GM_addStyle("#star{" + style_btn + "}");
+        var open = document.createElement("span");
+        open.id = "open";
+        open.innerHTML = "项目地址";
+        open.addEventListener("click", function () {window.open("https://github.com/FoxSuzuran/UESTCAutoEvaluator", "_blank");});
+        td2.appendChild(open);
+        GM_addStyle("#open{" + style_btn + "}");
+    }
+
 }
+
 
 function StartEvaluate() {
     nowurl = location.pathname;
