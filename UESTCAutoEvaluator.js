@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         电子科技大学自动评教脚本
 // @namespace    https://github.com/FoxSuzuran
-// @version      0.1
-// @description  电子科技大学自动评教脚本,只需要进到评教界面（打星那个界面）点击运行即可
+// @version      1.0
+// @description  电子科技大学自动评教脚本,只需要进到评教界面（打星那个界面）点击运行即可,可能最后要手动点一下提交
 // @author       Suzuran
 // @match        http://eams.uestc.edu.cn/eams/*
 // @icon         http://picgo.malossov.top/malpicbed/UESTCico.jpg
@@ -14,28 +14,32 @@ var mainPage = "http://eams.uestc.edu.cn/eams/evaluate/*";
 
 var tearcherStarPage = "http://eams.uestc.edu.cn/eams/evaluate!search.action";
 
-var textbookSelectPage1="http://eams.uestc.edu.cn/eams/evaluate!textbookEvalIndex.action";
-var textbookSelectPage2="http://eams.uestc.edu.cn/eams/evaluate!finishAnswer.action";
+var textbookSelectPage1 = "http://eams.uestc.edu.cn/eams/evaluate!textbookEvalIndex.action";
+var textbookSelectPage2 = "http://eams.uestc.edu.cn/eams/evaluate!finishAnswer.action";
 
-var textbookCommentPage="http://eams.uestc.edu.cn/eams/evaluate!textbookEval.action?evaTextbook.id";
+var textbookCommentPage = "http://eams.uestc.edu.cn/eams/evaluate!textbookEval.action?evaTextbook.id";
 
-var teacherCommentPage="http://eams.uestc.edu.cn/eams/evaluate!loadQtnaire.action";
+var teacherCommentPage = "http://eams.uestc.edu.cn/eams/evaluate!loadQtnaire.action";
 
 var nowurl = location.pathname;
 
-unsafeWindow.confirm = function confirm(){
+var last_classname = "";
+
+unsafeWindow.confirm = function confirm() {
     return true;
 }
 
-function AutoEvaluate(){
-    if(nowurl.includes("home")){
+function AutoEvaluate() {
+    //console.log(nowurl);
+    if (nowurl.includes("evaluate")) {
         setInterval(StartEvaluate, "400");
     }
 }
 
-setInterval(WindowDraw,"500");
+var begin = setInterval(WindowDraw, "5");
 
-function WindowDraw(){
+
+function WindowDraw() {
     nowurl = location.pathname;
     // 绘制窗口
     if (nowurl.includes("evaluate")) {
@@ -61,7 +65,7 @@ function WindowDraw(){
         table.appendChild(th);
         var tr = document.createElement("tr");
         table.appendChild(tr);
-        var tr2= document.createElement("tr");
+        var tr2 = document.createElement("tr");
         table.appendChild(tr2);
         var td = document.createElement("td");
         td.id = "footTd";
@@ -72,7 +76,7 @@ function WindowDraw(){
         var close = document.createElement("span");
         close.id = "close";
         close.innerHTML = "关闭弹窗";
-        close.addEventListener("click", function () {document.body.removeChild(document.getElementById("controlWindow"));}, false);
+        close.addEventListener("click", function () { document.body.removeChild(document.getElementById("controlWindow")); }, false);
         td.appendChild(close);
         GM_addStyle("#close{" + style_btn + "}");
         var score = document.createElement("span");
@@ -84,15 +88,16 @@ function WindowDraw(){
         var star = document.createElement("span");
         star.id = "star";
         star.innerHTML = "联系作者";
-        star.addEventListener("click", function () {window.open("https://github.com/FoxSuzuran", "_blank");});
+        star.addEventListener("click", function () { window.open("https://github.com/FoxSuzuran", "_blank"); });
         td2.appendChild(star);
         GM_addStyle("#star{" + style_btn + "}");
         var open = document.createElement("span");
         open.id = "open";
         open.innerHTML = "项目地址";
-        open.addEventListener("click", function () {window.open("https://github.com/FoxSuzuran/UESTCAutoEvaluator", "_blank");});
+        open.addEventListener("click", function () { window.open("https://github.com/FoxSuzuran/UESTCAutoEvaluator", "_blank"); });
         td2.appendChild(open);
         GM_addStyle("#open{" + style_btn + "}");
+        clearInterval(begin);
     }
 
 }
@@ -100,9 +105,9 @@ function WindowDraw(){
 
 function StartEvaluate() {
     nowurl = location.pathname;
-    //console.log(nowurl);
+    console.log(nowurl);
 
-    if(tearcherStarPage.includes(nowurl)){
+    if (tearcherStarPage.includes(nowurl)) {
         const fiveStarsNum = 4;
         const items = [...document.querySelectorAll("input[type='hidden']")].filter(
             item => item.id.includes("starNum")
@@ -110,22 +115,24 @@ function StartEvaluate() {
         items.slice(0, fiveStarsNum).forEach(item => (item.value = "5"));
         items.slice(fiveStarsNum).forEach(item => (item.value = "4"));
         document.querySelector("input[value='下一步']").click();
+        document.querySelector("input[value='提交']").click();
     }
-    if(textbookSelectPage1.includes(nowurl)||textbookSelectPage2.includes(nowurl)){
-        var items=[...document.querySelectorAll("a[onclick]")];
-        if(items.length != 0){
+    if (textbookSelectPage1.includes(nowurl) || textbookSelectPage2.includes(nowurl)) {
+        var items = [...document.querySelectorAll("a[onclick]")];
+        if (items.length != 0) {
             items[0].click();
-        }else{
+        } else {
             document.querySelector("input[value='提交，进入教师评教']").click();
         }
     }
-    if(textbookCommentPage.includes(nowurl)){
+    if (textbookCommentPage.includes(nowurl)) {
         document
             .querySelectorAll("input[type='radio'][value='0']")
             .forEach(item => (item.checked = true));
         document.querySelector("#sub").click();
     }
-    if(teacherCommentPage.includes(nowurl)){
+    if (teacherCommentPage.includes(nowurl)) {
+        var now_classname = document.querySelectorAll("tr")[1].textContent;
         [...document.querySelectorAll("input[type='hidden']")]
             .filter(item => item.id.includes("starNum"))
             .forEach(item => (item.value = "5"));
@@ -134,7 +141,13 @@ function StartEvaluate() {
             .forEach(item => (item.checked = true));
         document.querySelector("#evaText").textContent = "教学态度好，教学内容吸引人" + Math.random();
         try {
-            document.querySelector("input[value='下一步']").click();
+            //console.log(now_classname);
+            //console.log(last_classname);
+            if (now_classname != last_classname) {
+                console.log("click");
+                document.querySelector("input[value='下一步']").click();
+                last_classname = now_classname;
+            }
         } catch {
             document.querySelector("input[value='确认']").click();
         }
