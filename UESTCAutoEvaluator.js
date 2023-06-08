@@ -2,7 +2,7 @@
 // @name         电子科技大学自动评教脚本
 // @namespace    https://github.com/FoxSuzuran
 // @version      1.0
-// @description  电子科技大学自动评教脚本,只需要进到评教界面（打星那个界面）点击运行即可,可能最后要手动点一下提交
+// @description  电子科技大学自动评教脚本,只需要进到评教界面（打星那个界面）点击运行即可,最后要手动点一下提交
 // @author       Suzuran
 // @match        http://eams.uestc.edu.cn/eams/*
 // @icon         http://picgo.malossov.top/malpicbed/UESTCico.jpg
@@ -115,7 +115,6 @@ function StartEvaluate() {
         items.slice(0, fiveStarsNum).forEach(item => (item.value = "5"));
         items.slice(fiveStarsNum).forEach(item => (item.value = "4"));
         document.querySelector("input[value='下一步']").click();
-        document.querySelector("input[value='提交']").click();
     }
     if (textbookSelectPage1.includes(nowurl) || textbookSelectPage2.includes(nowurl)) {
         var items = [...document.querySelectorAll("a[onclick]")];
