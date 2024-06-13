@@ -4,22 +4,22 @@
 // @version      1.0
 // @description  电子科技大学自动评教脚本,只需要进到评教界面（打星那个界面）点击运行即可,最后要手动点一下提交
 // @author       Suzuran
-// @match        http://eams.uestc.edu.cn/eams/*
+// @match        https://eams.uestc.edu.cn/eams/*
 // @icon         http://picgo.malossov.top/malpicbed/UESTCico.jpg
 // @grant        GM_addStyle
 // @grant        unsafeWindow
 // ==/UserScript==
 
-var mainPage = "http://eams.uestc.edu.cn/eams/evaluate/*";
+var mainPage = "https://eams.uestc.edu.cn/eams/evaluate/*";
 
-var tearcherStarPage = "http://eams.uestc.edu.cn/eams/evaluate!search.action";
+var tearcherStarPage = "https://eams.uestc.edu.cn/eams/evaluate!search.action";
 
-var textbookSelectPage1 = "http://eams.uestc.edu.cn/eams/evaluate!textbookEvalIndex.action";
-var textbookSelectPage2 = "http://eams.uestc.edu.cn/eams/evaluate!finishAnswer.action";
+var textbookSelectPage1 = "https://eams.uestc.edu.cn/eams/evaluate!textbookEvalIndex.action";
+var textbookSelectPage2 = "https://eams.uestc.edu.cn/eams/evaluate!finishAnswer.action";
 
-var textbookCommentPage = "http://eams.uestc.edu.cn/eams/evaluate!textbookEval.action?evaTextbook.id";
+var textbookCommentPage = "https://eams.uestc.edu.cn/eams/evaluate!textbookEval.action?evaTextbook.id";
 
-var teacherCommentPage = "http://eams.uestc.edu.cn/eams/evaluate!loadQtnaire.action";
+var teacherCommentPage = "https://eams.uestc.edu.cn/eams/evaluate!loadQtnaire.action";
 
 var nowurl = location.pathname;
 
