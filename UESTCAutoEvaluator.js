@@ -235,7 +235,7 @@ function StartEvaluate() {
         document
             .querySelectorAll("input[type='checkbox']")
             .forEach(item => (item.checked = true));
-        document.querySelector("#evaText").textContent`${evaluations.prefix[randomNum(0, evaluations.prefix.length - 1)]}，${evaluations.suffix[randomNum(0, evaluations.suffix.length - 1)]}。 `
+        document.querySelector("#evaText").textContent = `${evaluations.prefix[randomNum(0, evaluations.prefix.length - 1)]}，${evaluations.suffix[randomNum(0, evaluations.suffix.length - 1)]}。 `
         try {
             if (now_classname != last_classname) {
                 console.log("click");
