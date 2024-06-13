@@ -11,18 +11,12 @@
 // ==/UserScript==
 
 var mainPage = "https://eams.uestc.edu.cn/eams/evaluate/*";
-
 var tearcherStarPage = "https://eams.uestc.edu.cn/eams/evaluate!search.action";
-
 var textbookSelectPage1 = "https://eams.uestc.edu.cn/eams/evaluate!textbookEvalIndex.action";
 var textbookSelectPage2 = "https://eams.uestc.edu.cn/eams/evaluate!finishAnswer.action";
-
 var textbookCommentPage = "https://eams.uestc.edu.cn/eams/evaluate!textbookEval.action?evaTextbook.id";
-
 var teacherCommentPage = "https://eams.uestc.edu.cn/eams/evaluate!loadQtnaire.action";
-
 var nowurl = location.pathname;
-
 var last_classname = "";
 
 unsafeWindow.confirm = function confirm() {
@@ -30,78 +24,73 @@ unsafeWindow.confirm = function confirm() {
 }
 
 function AutoEvaluate() {
-    //console.log(nowurl);
     if (nowurl.includes("evaluate")) {
-        setInterval(StartEvaluate, "400");
+        setInterval(StartEvaluate, 400);
     }
 }
 
-var begin = setInterval(WindowDraw, "5");
-
+var begin = setInterval(WindowDraw, 5);
 
 function WindowDraw() {
     nowurl = location.pathname;
-    // 绘制窗口
     if (nowurl.includes("evaluate")) {
         // 主题
-        var style_btn = 'float:right;background:rgba(228,228,228,0.4); cursor:pointer; margin:0px 1px 0px 0px; padding:0px 3px;color:black; border:2px ridge black;border:2px groove black;';
-        var style_win_top = 'z-index:998; padding:6px 10px 8px 15px;background-color:lightGrey;position:fixed;left:5px;top:5px;border:1px solid grey; ';
-        var style_win_buttom = 'z-index:998; padding:6px 10px 8px 15px;background-color:lightGrey;position:fixed;right:5px;bottom:5px;border:1px solid grey;  ';
+        var style_btn = 'background:none; color:#9370DB; padding:4px 8px; margin:4px; border:2px solid #9370DB; border-radius:6px; cursor:pointer; text-align:center; text-decoration:none; display:inline-block; font-size:12px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);';
+        var style_win = 'z-index:998; padding:10px; background-color:#ffebef; box-shadow:0 0 15px rgba(0,0,0,0.3); border-radius:10px; position:fixed; left:10px; top:10px; border:1px solid #C71585; width:180px;';
+
         // 开始绘制
         var newDiv = document.createElement("div");
         newDiv.id = "controlWindow";
         newDiv.align = "left";
         document.body.appendChild(newDiv);
-        GM_addStyle("#controlWindow{" + style_win_top + " }");
-        var table = document.createElement("table");
-        newDiv.appendChild(table);
-        var th = document.createElement("th");
-        th.id = "headTd";
-        var thDiv = document.createElement("span");
-        thDiv.id = "thDiv";
-        thDiv.innerHTML = "UESTC Evaluator";
-        GM_addStyle("#thDiv{color:red;font-size: 10pt;}");
-        th.appendChild(thDiv);
-        table.appendChild(th);
-        var tr = document.createElement("tr");
-        table.appendChild(tr);
-        var tr2 = document.createElement("tr");
-        table.appendChild(tr2);
-        var td = document.createElement("td");
-        td.id = "footTd";
-        var td2 = document.createElement("td");
-        td2.id = "footTd2";
-        tr.appendChild(td);
-        tr2.appendChild(td2);
-        var close = document.createElement("span");
+        GM_addStyle("#controlWindow{" + style_win + "}");
+
+        var header = document.createElement("div");
+        header.style.fontSize = "14px";
+        header.style.marginBottom = "10px";
+        header.style.color = "#C71585";
+        header.style.textAlign = "center";
+        header.innerHTML = "UESTC Evaluator";
+        newDiv.appendChild(header);
+
+        var btnContainer = document.createElement("div");
+        btnContainer.style.display = "grid";
+        btnContainer.style.gridTemplateColumns = "1fr 1fr";
+        btnContainer.style.gap = "4px";
+        btnContainer.style.justifyItems = "center";
+        newDiv.appendChild(btnContainer);
+
+        var close = document.createElement("button");
         close.id = "close";
         close.innerHTML = "关闭弹窗";
         close.addEventListener("click", function () { document.body.removeChild(document.getElementById("controlWindow")); }, false);
-        td.appendChild(close);
-        GM_addStyle("#close{" + style_btn + "}");
-        var score = document.createElement("span");
+        close.style.cssText = style_btn;
+        btnContainer.appendChild(close);
+
+        var score = document.createElement("button");
         score.id = "score";
         score.innerHTML = "开始评教";
         score.addEventListener("click", AutoEvaluate);
-        td.appendChild(score);
-        GM_addStyle("#score{" + style_btn + "}");
-        var star = document.createElement("span");
+        score.style.cssText = style_btn;
+        btnContainer.appendChild(score);
+
+        var star = document.createElement("button");
         star.id = "star";
         star.innerHTML = "联系作者";
         star.addEventListener("click", function () { window.open("https://github.com/FoxSuzuran", "_blank"); });
-        td2.appendChild(star);
-        GM_addStyle("#star{" + style_btn + "}");
-        var open = document.createElement("span");
+        star.style.cssText = style_btn;
+        btnContainer.appendChild(star);
+
+        var open = document.createElement("button");
         open.id = "open";
         open.innerHTML = "项目地址";
         open.addEventListener("click", function () { window.open("https://github.com/FoxSuzuran/UESTCAutoEvaluator", "_blank"); });
-        td2.appendChild(open);
-        GM_addStyle("#open{" + style_btn + "}");
+        open.style.cssText = style_btn;
+        btnContainer.appendChild(open);
+
         clearInterval(begin);
     }
-
 }
-
 
 function StartEvaluate() {
     nowurl = location.pathname;
@@ -140,8 +129,6 @@ function StartEvaluate() {
             .forEach(item => (item.checked = true));
         document.querySelector("#evaText").textContent = "教学态度好，教学内容吸引人" + Math.random();
         try {
-            //console.log(now_classname);
-            //console.log(last_classname);
             if (now_classname != last_classname) {
                 console.log("click");
                 document.querySelector("input[value='下一步']").click();
